@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios</title>
+
+    <!-- Bootstrap 4 CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome para ícones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 900px;
+            margin-top: 30px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2rem;
+            color: #343a40;
+        }
+        .table th, .table td {
+            text-align: center;
+        }
+        .btn {
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Relatórios</h1>
+
+    <!-- Relatório de Agendas -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Agenda</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Descrição</th>
+                    <th>Data</th>
+                    <th>Cliente</th>
+                    <th>Funcionário</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="agenda : ${agendas}">
+                    <td th:text="${agenda.id}"></td>
+                    <td th:text="${agenda.descricao}"></td>
+                    <td th:text="${#dates.format(agenda.data, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${agenda.cliente.nome}"></td>
+                    <td th:text="${agenda.funcionario.nome}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Relatório de Serviços -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Serviços</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="servico : ${servicos}">
+                    <td th:text="${servico.id}"></td>
+                    <td th:text="${servico.nome}"></td>
+                    <td th:text="${servico.preco}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Relatório de Funcionários -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Funcionários</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th>Salário</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="funcionario : ${funcionarios}">
+                    <td th:text="${funcionario.id}"></td>
+                    <td th:text="${funcionario.nome}"></td>
+                    <td th:text="${funcionario.telefone}"></td>
+                    <td th:text="${funcionario.email}"></td>
+                    <td th:text="${funcionario.salario}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Relatório de Clientes -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Clientes</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th>Endereço</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cliente : ${clientes}">
+                    <td th:text="${cliente.id}"></td>
+                    <td th:text="${cliente.nome}"></td>
+                    <td th:text="${cliente.telefone}"></td>
+                    <td th:text="${cliente.email}"></td>
+                    <td th:text="${cliente.endereco}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Botão para Voltar -->
+    <a href="/static" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Voltar para o Início
+    </a>
+
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

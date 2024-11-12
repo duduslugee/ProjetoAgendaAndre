@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${agenda.id != null ? 'Editar Agenda' : 'Criar Nova Agenda'}"></title>
+
+    <!-- Bootstrap 4 CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome para ícones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 30px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2rem;
+            color: #343a40;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-submit {
+            width: 100%;
+        }
+        .btn-back {
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 th:text="${agenda.id != null ? 'Editar Agenda' : 'Criar Nova Agenda'}"></h1>
+
+    <!-- Formulário de Agendas -->
+    <form th:action="@{/agenda/save}" th:object="${agenda}" method="post">
+
+        <!-- Campo de Descrição -->
+        <div class="form-group">
+            <label class="form-label" for="descricao">Descrição</label>
+            <input type="text" th:field="*{descricao}" class="form-control" placeholder="Descrição" required />
+        </div>
+
+        <!-- Campo de Data -->
+        <div class="form-group">
+            <label class="form-label" for="data">Data</label>
+            <input type="datetime-local" th:field="*{data}" class="form-control" required />
+        </div>
+
+        <!-- Campo de Cliente -->
+        <div class="form-group">
+            <label class="form-label" for="cliente">Cliente</label>
+            <select th:field="*{cliente.id}" class="form-control" required>
+                <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nome}"></option>
+            </select>
+        </div>
+
+        <!-- Campo de Funcionário -->
+        <div class="form-group">
+            <label class="form-label" for="funcionario">Funcionário</label>
+            <select th:field="*{funcionario.id}" class="form-control" required>
+                <option th:each="funcionario : ${funcionarios}" th:value="${funcionario.id}" th:text="${funcionario.nome}"></option>
+            </select>
+        </div>
+
+        <!-- Botão de Submit -->
+        <button type="submit" class="btn btn-primary btn-submit">
+            <i class="fas fa-save"></i> Salvar
+        </button>
+
+    </form>
+
+    <!-- Link de Voltar para a Lista de Agendas -->
+    <a href="/agenda/listar" class="btn btn-secondary btn-back">
+        <i class="fas fa-arrow-left"></i> Voltar para a Lista de Agendas
+    </a>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
