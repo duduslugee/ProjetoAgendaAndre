@@ -142,7 +142,6 @@
         <tr>
             <th>ID</th>
             <th>Nome</th>
-            <th>Descrição</th>
             <th>Preço</th>
         </tr>
         </thead>
@@ -150,8 +149,7 @@
         <tr th:each="servico : ${servicos}">
             <td th:text="${servico.id}"></td>
             <td th:text="${servico.nome}"></td>
-            <td th:number="${servico.valor}"></td>
-
+            <td th:text="${servico.valorFormatted}"></td>
         </tr>
         </tbody>
     </table>

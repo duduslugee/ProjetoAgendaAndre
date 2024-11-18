@@ -14,6 +14,9 @@ public class Servico {
     private String nome;
     private double valor;
 
+
+    private String valorFormatted;
+
     // Getters e Setters
 
     public Integer getId() {
@@ -38,6 +41,14 @@ public class Servico {
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    public String getValorFormatted() {
+        return valorFormatted;
+    }
+
+    public void setValorFormatted(String valorFormatted) {
+        this.valorFormatted = valorFormatted;
     }
 }
 
