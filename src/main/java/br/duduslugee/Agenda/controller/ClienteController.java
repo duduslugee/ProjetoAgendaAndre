@@ -2,65 +2,79 @@ package br.duduslugee.Agenda.controller;
 
 import br.duduslugee.Agenda.model.Cliente;
 import br.duduslugee.Agenda.service.ClienteService;
+import br.duduslugee.Agenda.service.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/clientes")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private EnderecoService enderecoService;
+
+    // Listar todos os clientes
     @GetMapping
-    public List<Cliente> listarClientes() {
-        return clienteService.listarTodosClientes();
+    public String listarClientes(Model model) {
+        List<Cliente> clientes = clienteService.listarTodosClientes();
+        model.addAttribute("clientes", clientes);
+        return "clientes/clientes";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarClientePorId(@PathVariable int id) {
-        Optional<Cliente> cliente = clienteService.buscarPorId(id);
-        if (cliente.isPresent()) {
-            return ResponseEntity.ok(cliente.get());
+    // Exibir formulário para criar ou editar cliente
+    @GetMapping("/criar")
+    public String criarCliente(Model model, @RequestParam(required = false) Integer id) {
+        Cliente cliente = id != null ?
+                clienteService.buscarPorId(id).orElse(new Cliente()) :
+                new Cliente();
+        model.addAttribute("cliente", cliente);
+        return "/clientes/criar";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String editarCliente(@PathVariable("id") Integer id, Model model) {
+        Optional<Cliente> clienteOptional = clienteService.buscarPorId(id);
+        if (clienteOptional.isPresent()) {
+            model.addAttribute("cliente", clienteOptional.get()); // Passa o cliente para o formulário
+            return "clientes/criar";  // Retorna o mesmo template de criação, mas agora é para edição
         } else {
-            return ResponseEntity.notFound().build();
+            // Se o cliente não for encontrado, redireciona para a lista de clientes
+            return "redirect:/clientes";
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
-        Cliente novoCliente = clienteService.salvarCliente(cliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoCliente);
+    @PostMapping("/salvar")
+    public String salvarCliente(@Valid @ModelAttribute Cliente cliente, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("cliente", cliente);
+            return "/clientes/criar"; // Retorna para o formulário de criação em caso de erro
+        }
+        clienteService.salvarCliente(cliente);
+        return "redirect:/clientes"; // Redireciona para a lista de clientes
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Cliente> atualizarCliente(@PathVariable int id, @RequestBody Cliente clienteAtualizado) {
-        Cliente cliente = clienteService.atualizarCliente(id, clienteAtualizado);
-        return ResponseEntity.ok(cliente);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirCliente(@PathVariable int id) {
+    // Excluir cliente
+    @GetMapping("/excluir/{id}")
+    public String excluirCliente(@PathVariable Integer id) {
         clienteService.excluirCliente(id);
-        return ResponseEntity.noContent().build();
+        return "redirect:/clientes";
     }
 
+    // Buscar cliente por nome
     @GetMapping("/buscar")
-    public List<Cliente> buscarPorNome(@RequestParam String nome) {
-        return clienteService.buscarPorNome(nome);
-    }
-
-    @GetMapping("/telefone")
-    public ResponseEntity<Cliente> buscarPorTelefone(@RequestParam String telefone) {
-        List<Cliente> clientes = clienteService.buscarPorTelefone(telefone);
-        if (clientes.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(clientes.get(0)); // Retorna o primeiro cliente encontrado
+    public String buscarPorNome(@RequestParam String nome, Model model) {
+        List<Cliente> clientes = clienteService.buscarPorNome(nome);
+        model.addAttribute("clientes", clientes);
+        return "clientes/clientes";
     }
 }

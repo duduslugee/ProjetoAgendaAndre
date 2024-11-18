@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulário de Cliente</title>
+    <style>
+        /* Geral */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9; /* Cor de fundo suave */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #2c3e50; /* Cor do título mais sóbria */
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        /* Estilo do formulário */
+        form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555; /* Cor dos rótulos */
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #3498db; /* Azul quando o campo é focado */
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3); /* Sombra suave no foco */
+        }
+
+        button {
+            background-color: #3498db; /* Azul brilhante */
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9; /* Azul escuro no hover */
+        }
+
+        .error {
+            color: #e74c3c; /* Vermelho para mensagens de erro */
+            font-size: 0.9em;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #3498db; /* Azul para o link */
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #2980b9; /* Azul escuro no hover do link */
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Cadastro de Cliente</h1>
+
+<!-- Formulário de edição/novo cliente -->
+<form th:action="@{'/clientes/salvar'}" th:object="${cliente}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" th:field="*{nome}" placeholder="Digite o nome completo" />
+
+    <label for="telefone">Telefone:</label>
+    <input type="text" id="telefone" th:field="*{telefone}" placeholder="Digite o telefone com DDD" />
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" th:field="*{email}" placeholder="Digite o email" />
+
+    <label for="cep">CEP:</label>
+    <input type="text" id="cep" th:field="*{endereco.cep}" placeholder="Digite o CEP" />
+
+    <label for="logradouro">Logradouro:</label>
+    <input type="text" id="logradouro" th:field="*{endereco.logradouro}" placeholder="Digite o logradouro" />
+
+    <label for="uf">UF:</label>
+    <input type="text" id="uf" th:field="*{endereco.uf}" placeholder="Digite o estado" />
+
+    <label for="estado">Estado:</label>
+    <input type="text" id="estado" th:field="*{endereco.estado}" placeholder="Digite o estado" />
+
+    <label for="cidade">Cidade:</label>
+    <input type="text" id="cidade" th:field="*{endereco.cidade}" placeholder="Digite a cidade" />
+
+    <label for="numero">Número:</label>
+    <input type="text" id="numero" th:field="*{endereco.numero}" placeholder="Número da casa" />
+
+    <label for="complemento">Complemento:</label>
+    <input type="text" id="complemento" th:field="*{endereco.complemento}" placeholder="Complemento" />
+
+    <div th:if="${#fields.hasErrors('nome')}" class="error">
+        <p th:errors="*{nome}"></p>
+    </div>
+
+    <button type="submit">Salvar</button>
+</form>
+
+<a th:href="@{'/clientes'}">Voltar</a>
+
+<script>
+    // Função para chamar o backend via AJAX
+    function buscarEnderecoPorCep() {
+        const cep = document.getElementById("cep").value;
+
+        // Validando o formato do CEP
+        const validacep = /^[0-9]{8}$/;
+        if (!validacep.test(cep)) {
+            alert("Formato de CEP inválido.");
+            return;
+        }
+
+        // Chama o endpoint do backend para buscar o endereço
+        fetch(`/endereco/buscarPorCep/${cep}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    document.getElementById("logradouro").value = data.logradouro;
+                    document.getElementById("uf").value = data.uf;
+                    document.getElementById("cidade").value = data.cidade;
+                    document.getElementById("estado").value = data.estado;
+                } else {
+                    alert("CEP não encontrado.");
+                }
+            })
+            .catch(error => alert("Erro ao buscar CEP: " + error));
+    }
+</script>
+
+</body>
+</html>

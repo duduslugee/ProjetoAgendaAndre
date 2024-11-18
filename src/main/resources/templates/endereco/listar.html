@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Endereços</title>
+    <style>
+        /* Estilização geral */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2F4F4F; /* Slate */
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #FF6F61; /* Vermilion */
+            margin-top: 30px;
+        }
+
+        table {
+            width: 80%;
+            margin: 30px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #3A5F5F; /* Slate darker */
+            color: #FF6F61; /* Vermilion */
+        }
+
+        td {
+            background-color: #3A5F5F;
+        }
+
+        button {
+            background-color: #FF6F61; /* Vermilion */
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #e14e44;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .address-info {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .address-info div {
+            width: 20%;
+        }
+
+        .add-button {
+            background-color: #4CAF50; /* Verde para "Adicionar" */
+            margin-top: 20px;
+            display: block;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .add-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>Lista de Endereços</h1>
+
+<!-- Botão para adicionar novo endereço -->
+<a href="/endereco/adicionar">
+    <button class="add-button">Adicionar Novo Endereço</button>
+</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Rua (Logradouro)</th>
+        <th>Cidade</th>
+        <th>Estado</th>
+        <th>CEP</th>
+        <th>UF</th>
+        <th>Número</th>
+        <th>Complemento</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="endereco : ${enderecos}">
+        <td th:text="${endereco.id}"></td>
+        <td th:text="${endereco.logradouro}"></td>
+        <td th:text="${endereco.cidade}"></td>
+        <td th:text="${endereco.estado}"></td>
+        <td th:text="${endereco.cep}"></td>
+        <td th:text="${endereco.uf}"></td>
+        <td th:text="${endereco.numero}"></td>
+        <td th:text="${endereco.complemento}"></td>
+        <td class="btn-container">
+            <a th:href="@{/endereco/editar/{id}(id=${endereco.id})}">
+                <button>Editar</button>
+            </a>
+            <form th:action="@{/endereco/excluir/{id}(id=${endereco.id})}" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este endereço?')">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

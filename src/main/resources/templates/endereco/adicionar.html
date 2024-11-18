@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Endereço</title>
+    <style>
+        /* Estilização geral */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2F4F4F; /* Slate */
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #FF6F61; /* Vermilion */
+        }
+
+        form {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #3A5F5F; /* Slate darker */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #FF6F61; /* Vermilion */
+            border-radius: 4px;
+            background-color: #4B7F7F; /* Slate lighter */
+            color: white;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            background-color: #FF6F61; /* Vermilion */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #D14B40; /* Vermilion darker */
+        }
+
+        /* Estilização do botão voltar */
+        .btn-voltar {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-voltar a {
+            color: #FF6F61; /* Vermilion */
+            text-decoration: none;
+            font-size: 1.2em;
+            border: 1px solid #FF6F61; /* Vermilion */
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .btn-voltar a:hover {
+            background-color: #FF6F61;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h1>Cadastro de Endereço</h1>
+<form action="/endereco/salvar" method="post">
+    <label for="cep">CEP:</label>
+    <input type="text" id="cep" name="cep" th:field="*{endereco.cep}" required><br>
+
+    <label for="logradouro">Logradouro:</label>
+    <input type="text" id="logradouro" name="logradouro" th:field="*{endereco.logradouro}" required><br>
+
+    <label for="uf">UF:</label>
+    <input type="text" id="uf" name="uf" th:field="*{endereco.uf}" required><br>
+
+    <label for="estado">Estado:</label>
+    <input type="text" id="estado" name="estado" th:field="*{endereco.estado}" required><br>
+
+    <label for="cidade">Cidade:</label>
+    <input type="text" id="cidade" name="cidade" th:field="*{endereco.cidade}" required><br>
+
+    <label for="numero">Número:</label>
+    <input type="number" id="numero" name="numero" th:field="*{endereco.numero}" required><br>
+
+    <label for="complemento">Complemento:</label>
+    <input type="text" id="complemento" name="complemento" th:field="*{endereco.complemento}"><br>
+
+    <button type="submit">Salvar</button>
+</form>
+
+<div class="btn-voltar">
+    <a href="/endereco">Voltar</a>
+</div>
+</body>
+</html>

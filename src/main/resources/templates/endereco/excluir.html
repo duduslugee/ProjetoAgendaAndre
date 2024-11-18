@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Endereços</title>
+</head>
+<body>
+<h1>Lista de Endereços</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Logradouro</th>
+        <th>Cidade</th>
+        <th>Estado</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="endereco : ${enderecos}">
+        <td th:text="${endereco.logradouro}"></td>
+        <td th:text="${endereco.cidade}"></td>
+        <td th:text="${endereco.estado}"></td>
+        <td>
+            <a th:href="@{/endereco/editar/{id}(id=${endereco.id})}">Editar</a> |
+            <a th:href="@{/endereco/excluir/{id}(id=${endereco.id})}" onclick="return confirm('Tem certeza que deseja excluir este endereço?')">Excluir</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="#" th:href="@{/endereco/adicionar}">Adicionar Endereço</a>
+</body>
+</html>

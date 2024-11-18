@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Endereço</title>
+    <style>
+        /* Estilização geral */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2F4F4F; /* Slate */
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #FF6F61; /* Vermilion */
+            margin-top: 30px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #FF6F61; /* Vermilion */
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #3A5F5F;
+            color: white;
+        }
+
+        button {
+            background-color: #FF6F61; /* Vermilion */
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e14e44;
+        }
+
+        .form-container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #3A5F5F;
+            border-radius: 8px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: #FF6F61; /* Vermilion */
+            font-size: 16px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>Editar Endereço</h1>
+<div class="form-container">
+    <form th:action="@{/endereco/atualizar}" th:object="${endereco}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <label for="logradouro">Logradouro:</label>
+        <input type="text" th:field="*{logradouro}" id="logradouro" /><br>
+
+        <label for="cep">CEP:</label>
+        <input type="text" th:field="*{cep}" id="cep" /><br>
+
+        <label for="estado">Estado:</label>
+        <input type="text" th:field="*{estado}" id="estado" /><br>
+
+        <label for="cidade">Cidade:</label>
+        <input type="text" th:field="*{cidade}" id="cidade" /><br>
+
+        <label for="uf">UF:</label>
+        <input type="text" th:field="*{uf}" id="uf" /><br>
+
+        <label for="numero">Número:</label>
+        <input type="number" th:field="*{numero}" id="numero" /><br>
+
+        <label for="complemento">Complemento:</label>
+        <input type="text" th:field="*{complemento}" id="complemento" /><br>
+
+        <button type="submit">Salvar</button>
+    </form>
+</div>
+
+<div class="btn-container">
+    <a href="#" th:href="@{/endereco}">Voltar para a lista</a>
+</div>
+</body>
+</html>

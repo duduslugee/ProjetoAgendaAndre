@@ -24,26 +24,26 @@ public class AgendaController {
     @Autowired
     private FuncionarioService funcionarioService;
 
-    @GetMapping("/form")
-    public String formAgenda(Model model, @RequestParam(required = false) Integer id) {
+    @GetMapping("/criar")
+    public String criarAgenda(Model model, @RequestParam(required = false) Integer id) {
         Agenda agenda = id != null ? agendaService.buscarAgendaPorId(id).orElse(new Agenda()) : new Agenda();
         model.addAttribute("agenda", agenda);
         model.addAttribute("clientes", clienteService.listarTodosClientes());
         model.addAttribute("funcionarios", funcionarioService.listarTodosFuncionarios());
-        return "agenda/form";
+        return "agenda/criar";
     }
 
-    @PostMapping("/save")
+    @PostMapping("/salvar")
     public String salvarAgenda(@ModelAttribute Agenda agenda) {
         agendaService.salvarAgenda(agenda);
-        return "redirect:/agenda/listar";
+        return "redirect:/agenda";
     }
 
-    @GetMapping("/listar")
+    @GetMapping("/")
     public String listarAgendas(Model model) {
         List<Agenda> agendas = agendaService.listarTodasAgendas();
         model.addAttribute("agendas", agendas);
-        return "agenda/listar";
+        return "listar";
     }
 
     @GetMapping("/editar/{id}")
@@ -52,18 +52,18 @@ public class AgendaController {
         model.addAttribute("agenda", agenda);
         model.addAttribute("clientes", clienteService.listarTodosClientes());
         model.addAttribute("funcionarios", funcionarioService.listarTodosFuncionarios());
-        return "agenda/form";
+        return "criar";
     }
 
     @PostMapping("/atualizar")
     public String atualizarAgenda(@ModelAttribute Agenda agenda) {
         agendaService.atualizarAgenda(agenda.getId(), agenda);
-        return "redirect:/agenda/listar";
+        return "redirect:/agenda";
     }
 
     @GetMapping("/excluir/{id}")
     public String excluirAgenda(@PathVariable("id") Integer id) {
         agendaService.excluirAgenda(id);
-        return "redirect:/agenda/listar";
+        return "redirect:/agenda";
     }
 }

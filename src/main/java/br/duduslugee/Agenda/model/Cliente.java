@@ -1,6 +1,7 @@
 package br.duduslugee.Agenda.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Cliente {
@@ -8,7 +9,10 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
+
+    @NotBlank(message = "Telefone é obrigatório")
     private String telefone;
     private String email;
 

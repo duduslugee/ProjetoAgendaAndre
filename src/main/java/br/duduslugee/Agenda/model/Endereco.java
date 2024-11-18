@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Endereco {
@@ -11,11 +12,21 @@ public class Endereco {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message = "Logradouro é obrigatório")
     private String logradouro;
+
+    @NotBlank(message = "UF é obrigatório")
     private String uf;
+
+    @NotBlank(message = "Estado é obrigatório")
     private String estado;
+
+    @NotBlank(message = "CEP é obrigatório")
     private String cep;
+
+    @NotBlank(message = "Cidade é obrigatória")
     private String cidade;
+
     private int numero;
     private String complemento;
 

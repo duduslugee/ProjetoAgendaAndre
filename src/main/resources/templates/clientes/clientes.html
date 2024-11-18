@@ -1,85 +1,164 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Clientes</title>
-
-    <!-- Bootstrap 4 CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome para ícones -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-
+    <title>Lista de Clientes</title>
     <style>
+        /* Geral */
         body {
-            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9; /* Cor de fundo mais suave */
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
-        .container {
-            max-width: 900px;
-            margin-top: 30px;
-        }
+
         h1 {
-            margin-bottom: 20px;
+            color: #2c3e50; /* Cor escura para o título */
             text-align: center;
-            font-size: 2rem;
-            color: #343a40;
+            margin-top: 50px;
+            font-size: 2.5em;
         }
-        .table th, .table td {
+
+        /* Formulário de busca */
+        .search-container {
             text-align: center;
+            margin-bottom: 30px;
         }
-        .btn {
-            margin-top: 20px;
-            display: block;
-            width: 100%;
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-right: 10px;
         }
+
+        .search-container button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #3498db; /* Azul brilhante */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-container button:hover {
+            background-color: #2980b9; /* Azul escuro quando passa o mouse */
+        }
+
+        /* Estilo da tabela */
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #34495e; /* Cor de fundo mais escura para o cabeçalho */
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ecf0f1; /* Linhas alternadas mais claras */
+        }
+
+        tr:hover {
+            background-color: #bdc3c7; /* Cor do hover nas linhas */
+        }
+
+        /* Estilo dos links e botões de ação */
+        a {
+            text-decoration: none;
+            color: #3498db; /* Azul brilhante para links */
+            font-weight: bold;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #2980b9; /* Azul escuro no hover */
+        }
+
+        /* Botão "Novo Cliente" */
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 20px auto;
+            background-color: #2ecc71; /* Verde suave */
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #27ae60; /* Verde escuro no hover */
+        }
+
+        /* Adicionando espaçamento adequado */
+        .content {
+            padding: 20px;
+        }
+
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Relatório de Clientes</h1>
+<div class="content">
+    <h1>Lista de Clientes</h1>
 
-    <!-- Relatório de Clientes -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title">Clientes</h5>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Telefone</th>
-                    <th>Email</th>
-                    <th>Endereço</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="cliente : ${clientes}">
-                    <td th:text="${cliente.id}"></td>
-                    <td th:text="${cliente.nome}"></td>
-                    <td th:text="${cliente.telefone}"></td>
-                    <td th:text="${cliente.email}"></td>
-                    <td th:text="${cliente.endereco}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <!-- Formulário de busca -->
+    <div class="search-container">
+        <form th:action="@{'/clientes/buscar'}" method="get">
+            <input type="text" name="nome" placeholder="Buscar por nome" />
+            <button type="submit">Buscar</button>
+        </form>
     </div>
 
-    <!-- Botão para Voltar -->
-    <a href="/" class="btn btn-secondary">
-        <i class="fas fa-arrow-left"></i> Voltar para o Início
-    </a>
+    <!-- Tabela de clientes -->
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cliente : ${clientes}">
+            <td th:text="${cliente.id}"></td>
+            <td th:text="${cliente.nome}"></td>
+            <td th:text="${cliente.telefone}"></td>
+            <td>
+                <a th:href="@{'/clientes/editar/' + ${cliente.id}}">Editar</a>
+                <a th:href="@{'/clientes/excluir/' + ${cliente.id}}">Excluir</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
+    <!-- Botão para criar um novo cliente -->
+    <div style="text-align: center;">
+        <a th:href="@{'/clientes/criar'}" class="button">Novo Cliente</a>
+    </div>
 </div>
-
-<!-- Bootstrap JS (optional) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

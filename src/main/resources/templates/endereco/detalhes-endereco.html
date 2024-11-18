@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Endereço</title>
+    <style>
+        /* Estilização geral */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2F4F4F; /* Slate */
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #FF6F61; /* Vermilion */
+        }
+
+        .detalhes {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #3A5F5F; /* Slate darker */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        strong {
+            color: #FF6F61; /* Vermilion */
+        }
+
+        /* Estilização do botão voltar */
+        .btn-voltar {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-voltar a {
+            color: #FF6F61; /* Vermilion */
+            text-decoration: none;
+            font-size: 1.2em;
+            border: 1px solid #FF6F61; /* Vermilion */
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .btn-voltar a:hover {
+            background-color: #FF6F61;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h1>Detalhes do Endereço</h1>
+<div class="detalhes">
+    <p><strong>CEP:</strong> <span th:text="${endereco.cep}"></span></p>
+    <p><strong>Logradouro:</strong> <span th:text="${endereco.logradouro}"></span></p>
+    <p><strong>UF:</strong> <span th:text="${endereco.uf}"></span></p>
+    <p><strong>Cidade:</strong> <span th:text="${endereco.cidade}"></span></p>
+    <p><strong>Estado:</strong> <span th:text="${endereco.estado}"></span></p>
+    <p><strong>Número:</strong> <span th:text="${endereco.numero}"></span></p>
+    <p><strong>Complemento:</strong> <span th:text="${endereco.complemento}"></span></p>
+</div>
+
+<div class="btn-voltar">
+    <a href="/endereco/listar">Voltar</a>
+</div>
+</body>
+</html>
