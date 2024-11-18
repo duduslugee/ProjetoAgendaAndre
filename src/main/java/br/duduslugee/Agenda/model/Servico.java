@@ -16,7 +16,7 @@ public class Servico {
 
     // Getters e Setters
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

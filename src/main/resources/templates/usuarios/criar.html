@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuário</title>
+    <style>
+        /* Geral */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9; /* Cor de fundo mais suave */
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #2c3e50; /* Cor escura para o título */
+            text-align: center;
+            margin-top: 50px;
+            font-size: 2.5em;
+        }
+
+        /* Estilo do formulário */
+        form {
+            width: 50%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #34495e;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"], input[type="password"], select {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        button {
+            background-color: #2ecc71; /* Verde suave */
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #27ae60; /* Verde escuro no hover */
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .actions a {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 1em;
+            margin-right: 15px;
+        }
+
+        .actions a:hover {
+            background-color: #2980b9;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="content">
+    <h1>Usuário</h1>
+
+    <form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="post">
+        <label for="nomeUsuario">Nome do Usuário:</label>
+        <input type="text" id="nomeUsuario" th:field="*{nomeUsuario}" />
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" th:field="*{senha}" />
+
+        <label for="tipoAcesso">Tipo de Acesso:</label>
+        <select id="tipoAcesso" th:field="*{tipoAcesso}">
+            <option th:each="tipo : ${tiposAcesso}"
+                    th:value="${tipo.id}"
+                    th:text="${tipo.descricao}">
+            </option>
+        </select>
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <!-- Botão de Cancelar (opcional) -->
+    <div class="actions">
+        <a href="/usuarios" class="button">Cancelar</a>
+    </div>
+
+</div>
+
+</body>
+</html>

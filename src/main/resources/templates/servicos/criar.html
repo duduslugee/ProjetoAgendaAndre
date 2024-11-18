@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Serviço</title>
+    <style>
+        /* Geral */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9; /* Cor de fundo suave */
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #2c3e50; /* Cor escura para o título */
+            text-align: center;
+            margin-top: 50px;
+            font-size: 2.5em;
+        }
+
+        /* Estilo do formulário */
+        form {
+            width: 40%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #2ecc71; /* Verde suave */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #27ae60; /* Verde escuro no hover */
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            text-decoration: none;
+            color: #3498db; /* Azul para o link */
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h1 th:text="${servico.id} != null ? 'Editar Serviço' : 'Criar Novo Serviço'"></h1>
+
+<form th:action="@{/servicos/salvar}" th:object="${servico}" method="post">
+    <!-- Campo oculto para o ID -->
+    <input type="hidden" th:field="*{id}" />
+
+    <label for="nome">Nome do Serviço:</label>
+    <input type="text" id="nome" th:field="*{nome}" placeholder="Digite o nome do serviço" required/>
+
+    <label for="valor">Valor do Serviço:</label>
+    <input type="number" id="valor" th:field="*{valor}" placeholder="Digite o valor do serviço" step="0.01" required/>
+
+    <button type="submit" th:text="${servico.id} != null ? 'Atualizar Serviço' : 'Salvar Serviço'"></button>
+</form>
+
+<a href="/servicos" class="back-link">Voltar para a lista</a>
+
+</body>
+</html>

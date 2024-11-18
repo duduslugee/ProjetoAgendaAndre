@@ -11,7 +11,7 @@ public class TipoAcesso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String descricao;  // This is the field you're querying on
+    private String descricao;
 
     // Getters and setters
 

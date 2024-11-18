@@ -1,9 +1,9 @@
 package br.duduslugee.Agenda.repository;
 
-import br.duduslugee.Agenda.model.Usuario;
+import br.duduslugee.Agenda.model.TipoAcesso;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+public interface TipoAcessoRepository extends JpaRepository<TipoAcesso, Integer> {
 }

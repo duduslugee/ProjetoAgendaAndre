@@ -1,37 +1,118 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relatório de Funcionários</title>
-
-    <!-- Bootstrap 4 CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome para ícones -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-
     <style>
+        /* Geral */
         body {
-            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9; /* Cor de fundo mais suave */
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
-        .container {
-            max-width: 900px;
-            margin-top: 30px;
-        }
+
         h1 {
-            margin-bottom: 20px;
+            color: #2c3e50; /* Cor escura para o título */
             text-align: center;
-            font-size: 2rem;
-            color: #343a40;
+            margin-top: 50px;
+            font-size: 2.5em;
         }
-        .table th, .table td {
+
+        /* Centralizar o botão */
+        .btn-primary {
+            background-color: #fff; /* Cor da letra (branco) */
+            color: #3498db; /* Azul brilhante para a cor da fonte */
+            padding: 10px 20px;
             text-align: center;
-        }
-        .btn {
-            margin-top: 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            margin: 20px auto; /* Centralizar */
             display: block;
-            width: 100%;
+            width: 200px;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #3498db; /* Azul na borda */
+        }
+
+        .btn-primary:hover {
+            background-color: #3498db; /* Azul de fundo no hover */
+            color: white; /* Cor da fonte no hover */
+        }
+
+        /* Estilo da tabela */
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #34495e; /* Cor de fundo mais escura para o cabeçalho */
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ecf0f1; /* Linhas alternadas mais claras */
+        }
+
+        tr:hover {
+            background-color: #bdc3c7; /* Cor do hover nas linhas */
+        }
+
+        /* Estilo dos links e botões de ação */
+        a {
+            text-decoration: none;
+            color: #3498db; /* Azul brilhante para links */
+            font-weight: bold;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #2980b9; /* Azul escuro no hover */
+        }
+
+        /* Botões "Editar" e "Excluir" */
+        .btn-warning, .btn-danger {
+            padding: 5px 15px;
+            font-size: 1em;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22; /* Laranja mais escuro no hover */
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b; /* Vermelho mais escuro no hover */
+        }
+
+        /* Estilo do texto quando não há dados */
+        .no-data {
+            text-align: center;
+            font-size: 1.2em;
+            color: #7f8c8d;
         }
     </style>
 </head>
@@ -39,14 +120,12 @@
 
 <div class="container">
     <h1>Relatório de Funcionários</h1>
-
-    <!-- Relatório de Funcionários -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title">Funcionários</h5>
-        </div>
+    <a href="/funcionarios/criar" class="btn-primary">
+        <i class="fas fa-plus"></i> Adicionar Funcionário
+    </a>
+    <div class="card">
         <div class="card-body">
-            <table class="table table-bordered">
+            <table>
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -54,6 +133,8 @@
                     <th>Telefone</th>
                     <th>Email</th>
                     <th>Salário</th>
+                    <th>Endereço</th>
+                    <th>Ações</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -62,24 +143,36 @@
                     <td th:text="${funcionario.nome}"></td>
                     <td th:text="${funcionario.telefone}"></td>
                     <td th:text="${funcionario.email}"></td>
-                    <td th:text="${funcionario.salario}"></td>
+                    <td th:text="${#numbers.formatDecimal(funcionario.salario, 2, 2)}"></td>
+                    <td>
+                        <div th:if="${funcionario.endereco != null}">
+                            <span th:text="${funcionario.endereco.logradouro}"></span>,
+                            <span th:text="${funcionario.endereco.numero}"></span><br>
+                            <span th:text="${funcionario.endereco.cidade}"></span> -
+                            <span th:text="${funcionario.endereco.estado}"></span><br>
+                            CEP: <span th:text="${funcionario.endereco.cep}"></span>
+                        </div>
+                        <div th:if="${funcionario.endereco == null}">
+                            <em>Não cadastrado</em>
+                        </div>
+                    </td>
+                    <td>
+                        <a th:href="@{/funcionarios/criar(id=${funcionario.id})}" class="btn-warning">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a th:href="@{/funcionarios/excluir/{id}(id=${funcionario.id})}" class="btn-danger">
+                            <i class="fas fa-trash"></i> Excluir
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(funcionarios)}">
+                    <td colspan="7" class="no-data">Nenhum funcionário encontrado.</td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
-    <!-- Botão para Voltar -->
-    <a href="/" class="btn btn-secondary">
-        <i class="fas fa-arrow-left"></i> Voltar para o Início
-    </a>
-
 </div>
-
-<!-- Bootstrap JS (optional) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

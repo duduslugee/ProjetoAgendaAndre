@@ -45,10 +45,9 @@ public class ClienteController {
     public String editarCliente(@PathVariable("id") Integer id, Model model) {
         Optional<Cliente> clienteOptional = clienteService.buscarPorId(id);
         if (clienteOptional.isPresent()) {
-            model.addAttribute("cliente", clienteOptional.get()); // Passa o cliente para o formulário
-            return "clientes/criar";  // Retorna o mesmo template de criação, mas agora é para edição
+            model.addAttribute("cliente", clienteOptional.get());
+            return "clientes/criar";
         } else {
-            // Se o cliente não for encontrado, redireciona para a lista de clientes
             return "redirect:/clientes";
         }
     }

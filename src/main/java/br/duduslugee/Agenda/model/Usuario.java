@@ -2,17 +2,18 @@ package br.duduslugee.Agenda.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String usuario;
+    private String nomeUsuario;
     private String senha;
-    private LocalDate dtCadastro;
+    private LocalDateTime dtCadastro;
 
     @ManyToOne
     @JoinColumn(name = "tipo_acesso_id")
@@ -28,12 +29,12 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getNomeUsuario() {
+        return nomeUsuario;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setNomeUsuario(String usuario) {
+        this.nomeUsuario = usuario;
     }
 
     public String getSenha() {
@@ -44,11 +45,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public LocalDate getDtCadastro() {
+    public LocalDateTime getDtCadastro() {
         return dtCadastro;
     }
 
-    public void setDtCadastro(LocalDate dtCadastro) {
+    public void setDtCadastro(LocalDateTime dtCadastro) {
         this.dtCadastro = dtCadastro;
     }
 

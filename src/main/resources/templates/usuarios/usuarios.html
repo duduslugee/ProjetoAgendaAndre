@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Serviços</title>
+    <title>Lista de Usuários</title>
     <style>
         /* Geral */
         body {
@@ -20,7 +20,7 @@
             font-size: 2.5em;
         }
 
-        /* Botão "Criar Novo Serviço" */
+        /* Botão "Adicionar Usuário" */
         .button {
             display: inline-block;
             padding: 12px 25px;
@@ -110,32 +110,34 @@
 <body>
 
 <div class="content">
-    <h1>Lista de Serviços</h1>
+    <h1>Lista de Usuários</h1>
 
-    <!-- Botão "Criar Novo Serviço" -->
+    <!-- Botão "Adicionar Usuário" -->
     <div class="actions">
-        <a th:href="@{/servicos/criar}" class="button">Criar Novo Serviço</a>
+        <a href="/usuarios/adicionar" class="button">Adicionar Usuário</a>
     </div>
 
-    <!-- Tabela de serviços -->
+    <!-- Tabela de usuários -->
     <table>
         <thead>
         <tr>
             <th>ID</th>
-            <th>Nome</th>
-            <th>Valor</th>
+            <th>Usuário</th>
+            <th>Tipo de Acesso</th>
+            <th>Data de Cadastro</th>
             <th>Ações</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="servico : ${servicos}">
-            <td th:text="${servico.id}"></td>
-            <td th:text="${servico.nome}"></td>
-            <td th:text="${servico.valor}"></td>
-            <td>
-                <a th:href="@{'/servicos/editar/' + ${servico.id}}">Editar</a>
-                <a th:href="@{'/servicos/excluir/' + ${servico.id}}"
-                   onclick="return confirm('Tem certeza que deseja excluir este serviço?')">Excluir</a>
+        <tr th:each="usuario : ${usuarios}">
+            <td th:text="${usuario.id}"></td>
+            <td th:text="${usuario.nomeUsuario}"></td>
+            <td th:text="${usuario.tipoAcesso.descricao}"></td>
+            <td th:text="${usuario.dtCadastro != null ? usuario.dtCadastro.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm')) : ''}"></td>
+            <td class="actions">
+                <a th:href="@{'/usuarios/editar/' + ${usuario.id}}" class="btn btn-warning btn-sm">Editar</a>
+                <a th:href="@{'/usuarios/excluir/' + ${usuario.id}}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Deseja realmente excluir este usuário?')">Excluir</a>
             </td>
         </tr>
         </tbody>

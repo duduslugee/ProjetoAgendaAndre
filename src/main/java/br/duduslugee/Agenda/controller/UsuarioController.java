@@ -2,66 +2,79 @@ package br.duduslugee.Agenda.controller;
 
 import br.duduslugee.Agenda.model.TipoAcesso;
 import br.duduslugee.Agenda.model.Usuario;
+import br.duduslugee.Agenda.service.TipoAcessoService;
 import br.duduslugee.Agenda.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private TipoAcessoService tipoAcessoService;
+
+    // Método para listar todos os usuários
     @GetMapping
-    public List<Usuario> listarUsuarios() {
-        return usuarioService.listarTodosUsuarios();
+    public String listarUsuarios(Model model) {
+        List<Usuario> usuarios = usuarioService.listarTodosUsuarios();
+        model.addAttribute("usuarios", usuarios);
+        return "usuarios/usuarios";  // Página de listagem de usuários
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable int id) {
-        return usuarioService.buscarPorId(id)
-                .map(usuario -> ResponseEntity.ok(usuario))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+
+
+    // Método para exibir o formulário de criação de usuário
+    @GetMapping("/adicionar")
+    public String adicionarUsuario(Model model) {
+        List<TipoAcesso> tiposAcesso = tipoAcessoService.listarTodosTiposDeAcesso();
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("tiposAcesso", tiposAcesso);
+        return "usuarios/criar";
     }
 
-    @PostMapping
-    public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
-        Usuario novoUsuario = usuarioService.salvarUsuario(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
+    @GetMapping("/editar/{id}")
+    public String editarUsuario(@PathVariable int id, Model model) {
+        Usuario usuario = usuarioService.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        List<TipoAcesso> tiposAcesso = tipoAcessoService.listarTodosTiposDeAcesso();
+
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("tiposAcesso", tiposAcesso);
+
+        return "usuarios/criar";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable int id, @RequestBody Usuario usuarioAtualizado) {
-        Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
-        return ResponseEntity.ok(usuario);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirUsuario(@PathVariable int id) {
-        usuarioService.excluirUsuario(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/buscar")
-    public ResponseEntity<List<Usuario>> buscarPorUsuario(@RequestParam String usuario) {
-        List<Usuario> usuarios = usuarioService.buscarPorUsuario(usuario);
-        if (usuarios.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    @PostMapping("/salvar")
+    public String salvarUsuario(@ModelAttribute @Valid Usuario usuario, BindingResult result) {
+        if (result.hasErrors()) {
+            return "usuarios/criar";
         }
-        return ResponseEntity.ok(usuarios);
+        if (usuario.getId() != 0) {
+            usuarioService.atualizarUsuario(usuario.getId(), usuario);
+        } else {
+            usuario.setDtCadastro(LocalDateTime.now());
+            usuarioService.salvarUsuario(usuario);
+        }
+
+        return "redirect:/usuarios";
     }
 
-    @GetMapping("/tipoAcesso")
-    public ResponseEntity<List<Usuario>> buscarPorTipoAcesso(@RequestParam TipoAcesso tipoAcesso) {
-        List<Usuario> usuarios = usuarioService.buscarPorTipoAcesso(tipoAcesso);
-        if (usuarios.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(usuarios);
+    // Método para excluir o usuário
+    @GetMapping("/excluir/{id}")
+    public String excluirUsuario(@PathVariable int id) {
+        usuarioService.excluirUsuario(id);  // Excluindo o usuário do banco
+        return "redirect:/usuarios";  // Redirecionando para a lista de usuários
     }
 }

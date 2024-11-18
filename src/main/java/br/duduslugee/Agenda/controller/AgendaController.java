@@ -52,7 +52,7 @@ public class AgendaController {
         model.addAttribute("agenda", agenda);
         model.addAttribute("clientes", clienteService.listarTodosClientes());
         model.addAttribute("funcionarios", funcionarioService.listarTodosFuncionarios());
-        return "criar";
+        return "/agenda/criar";
     }
 
     @PostMapping("/atualizar")

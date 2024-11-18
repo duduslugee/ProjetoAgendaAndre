@@ -1,55 +1,63 @@
 package br.duduslugee.Agenda.controller;
 
-import br.duduslugee.Agenda.model.Agenda;
+import br.duduslugee.Agenda.model.Cliente;
 import br.duduslugee.Agenda.model.Servico;
-import br.duduslugee.Agenda.service.AgendaService;
 import br.duduslugee.Agenda.service.ServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/servicos")
 public class ServicoController {
 
     @Autowired
     private ServicoService servicoService;
 
+    // Listar todos os serviços
     @GetMapping
-    public List<Servico> listarServicos() {
-        return servicoService.listarTodosServicos();
+    public String listarServicos(Model model) {
+        List<Servico> servicos = servicoService.listarTodosServicos();
+        model.addAttribute("servicos", servicos);
+        return "servicos/servicos";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Servico> buscarServicoPorId(@PathVariable int id) {
-        return servicoService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    // Exibe o formulário de criação de serviço
+    @GetMapping("/criar")
+    public String criarServico(Model model) {
+        model.addAttribute("servico", new Servico());
+        return "servicos/criar";
     }
 
-    @PostMapping
-    public ResponseEntity<Servico> criarServico(@RequestBody Servico servico) {
-        Servico novoServico = servicoService.salvarServico(servico);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoServico);
+    @GetMapping("/editar/{id}")
+    public String editarServico(@PathVariable("id") Integer id, Model model) {
+        Optional<Servico> servicoOptional = servicoService.buscarPorId(id);
+        if (servicoOptional.isPresent()) {
+            model.addAttribute("servico", servicoOptional.get());
+            return "servicos/criar";
+        } else {
+            return "redirect:/servicos";
+        }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Servico> atualizarServico(@PathVariable int id, @RequestBody Servico servicoAtualizado) {
-        Servico servico = servicoService.atualizarServico(id, servicoAtualizado);
-        return ResponseEntity.ok(servico);
+    @PostMapping("/salvar")
+    public String salvarServico(@ModelAttribute("servico") Servico servico) {
+        if (servico.getId() != null) {
+            servicoService.salvarServico(servico);
+        } else {
+            servicoService.salvarServico(servico);
+        }
+        return "redirect:/servicos";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirServico(@PathVariable int id) {
+    // Excluir um serviço
+    @GetMapping("/excluir/{id}")
+    public String excluirServico(@PathVariable int id) {
         servicoService.excluirServico(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/buscar")
-    public List<Servico> buscarPorNome(@RequestParam String nome) {
-        return servicoService.buscarPorNome(nome);
+        return "redirect:/servicos";
     }
 }

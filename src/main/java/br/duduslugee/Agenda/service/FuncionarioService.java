@@ -1,13 +1,16 @@
 package br.duduslugee.Agenda.service;
 
+import br.duduslugee.Agenda.model.Endereco;
 import br.duduslugee.Agenda.model.Funcionario;
 import br.duduslugee.Agenda.repository.FuncionarioRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class FuncionarioService {
@@ -64,5 +67,34 @@ public class FuncionarioService {
     // Busca funcionários com salário maior que um valor específico
     public List<Funcionario> buscarPorSalarioAcimaDe(double salario) {
         return funcionarioRepository.findBySalarioGreaterThan(salario);
+    }
+
+    private final Random random = new Random();
+
+    @PostConstruct
+    public void adicionarFuncionariosAleatorios() {
+        for (int i = 0; i < 5; i++) {
+            Funcionario funcionario = new Funcionario();
+            funcionario.setNome("Funcionário " + random.nextInt(1000));
+            funcionario.setTelefone("9" + (random.nextInt(1000000000) + 100000000));
+            funcionario.setEmail("funcionario" + random.nextInt(1000) + "@email.com");
+            funcionario.setSalario(2000 + random.nextDouble() * 5000);
+
+            // Criando um endereço aleatório
+            Endereco endereco = new Endereco();
+            endereco.setLogradouro("Rua " + random.nextInt(1000));
+            endereco.setUf("SP");
+            endereco.setEstado("São Paulo");
+            endereco.setCep("12345-678");
+            endereco.setCidade("Cidade " + random.nextInt(100));
+            endereco.setNumero(random.nextInt(1000) + 1);
+            endereco.setComplemento("Complemento " + random.nextInt(100));
+
+            // Associando o endereço ao funcionário
+            funcionario.setEndereco(endereco);
+
+            // Salvando o funcionário (o endereço será salvo automaticamente devido ao CascadeType.ALL)
+            funcionarioRepository.save(funcionario);
+        }
     }
 }

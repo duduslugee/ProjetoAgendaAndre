@@ -12,8 +12,8 @@ public class Funcionario {
     private String telefone;
     private String email;
 
-    @jakarta.persistence.OneToOne
-    @JoinColumn(name = "endereco_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     private Endereco endereco;
 
     private double salario;
