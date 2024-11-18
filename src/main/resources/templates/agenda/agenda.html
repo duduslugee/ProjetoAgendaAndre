@@ -1,34 +1,137 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Lista de Agendas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendas</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .btn-primary {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .actions a {
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .btn-warning {
+            background-color: #FFA500;
+        }
+
+        .btn-warning:hover {
+            background-color: #e59400;
+        }
+
+        .btn-danger {
+            background-color: #f44336;
+        }
+
+        .btn-danger:hover {
+            background-color: #da190b;
+        }
+    </style>
 </head>
 <body>
-<h1>Lista de Agendas</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Descrição</th>
-        <th>Data</th>
-        <th>Cliente</th>
-        <th>Status</th>
-        <th>Ação</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="agenda : ${agendas}">
-        <td th:text="${agenda.descricao}"></td>
-        <td th:text="${agenda.data}"></td>
-        <td th:text="${agenda.cliente.nome}"></td>
-        <td th:text="${agenda.status ? 'Realizada' : 'Não realizada'}"></td>
-        <td>
-            <a th:href="@{/agenda/detalhes/{id}(id=${agenda.id})}">Detalhes</a> |
-            <a th:href="@{/agenda/excluir/{id}(id=${agenda.id})}">Excluir</a> |
-            <a th:href="@{/agenda/realizar/{id}(id=${agenda.id})}">Marcar como Realizada</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a href="/agenda/novo">Adicionar Nova Agenda</a>
+<div>
+    <h1>Lista de Agendas</h1>
+    <!-- Botão para criar nova agenda -->
+    <a href="/agenda/criar" class="btn-primary">Criar Nova Agenda</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Descrição</th>
+            <th>Cliente</th>
+            <th>Funcionário</th>
+            <th>Serviço</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Loop para exibir as agendas -->
+        <tr th:each="agenda : ${agendas}">
+            <td th:text="${agenda.descricao}"></td>
+            <td th:text="${agenda.cliente.nome}"></td>
+            <td th:text="${agenda.funcionario.nome}"></td>
+            <td th:text="${agenda.servico.nome}"></td>
+            <td th:text="${agenda.data.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm'))}"></td>
+            <td th:text="${agenda.status ? 'Realizado' : 'Não Realizado'}"></td>
+            <td class="actions">
+                <!-- Ação Editar -->
+                <a th:href="@{/agenda/editar/{id}(id=${agenda.id})}" class="btn-warning" th:if="${!agenda.status}">Editar</a>
+                <!-- Ação Excluir -->
+                <a th:href="@{/agenda/excluir/{id}(id=${agenda.id})}" class="btn-danger"
+                   onclick="return confirm('Deseja realmente excluir esta agenda?')">Excluir</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

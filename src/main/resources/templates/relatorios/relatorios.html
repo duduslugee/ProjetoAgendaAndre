@@ -1,168 +1,204 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relatórios</title>
-
-    <!-- Bootstrap 4 CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome para ícones -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-
     <style>
         body {
-            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f6f9;
+            color: #333;
         }
-        .container {
-            max-width: 900px;
-            margin-top: 30px;
-        }
+
         h1 {
+            text-align: center;
+            color: #2c3e50;
             margin-bottom: 20px;
-            text-align: center;
-            font-size: 2rem;
-            color: #343a40;
         }
-        .table th, .table td {
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
             text-align: center;
         }
-        .btn {
-            margin-top: 20px;
+
+        .tab:hover {
+            background-color: #45a049;
+        }
+
+        .tab.active {
+            background-color: #2e7d32;
+        }
+
+        .report {
+            display: none;
+        }
+
+        .report.active {
             display: block;
+        }
+
+        table {
             width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tabs = document.querySelectorAll(".tab");
+            const reports = document.querySelectorAll(".report");
+
+            tabs.forEach((tab, index) => {
+                tab.addEventListener("click", () => {
+                    tabs.forEach(t => t.classList.remove("active"));
+                    reports.forEach(r => r.classList.remove("active"));
+                    tab.classList.add("active");
+                    reports[index].classList.add("active");
+                });
+            });
+
+            // Ativar o primeiro relatório por padrão
+            tabs[0].classList.add("active");
+            reports[0].classList.add("active");
+        });
+    </script>
 </head>
 <body>
+<h1>Relatórios</h1>
 
-<div class="container">
-    <h1>Relatórios</h1>
-
-    <!-- Relatório de Agendas -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title">Agenda</h5>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Descrição</th>
-                    <th>Data</th>
-                    <th>Cliente</th>
-                    <th>Funcionário</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="agenda : ${agendas}">
-                    <td th:text="${agenda.id}"></td>
-                    <td th:text="${agenda.descricao}"></td>
-                    <td th:text="${#dates.format(agenda.data, 'dd/MM/yyyy HH:mm')}"></td>
-                    <td th:text="${agenda.cliente.nome}"></td>
-                    <td th:text="${agenda.funcionario.nome}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Relatório de Serviços -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title">Serviços</h5>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Preço</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="servico : ${servicos}">
-                    <td th:text="${servico.id}"></td>
-                    <td th:text="${servico.nome}"></td>
-                    <td th:text="${servico.preco}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Relatório de Funcionários -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title">Funcionários</h5>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Telefone</th>
-                    <th>Email</th>
-                    <th>Salário</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="funcionario : ${funcionarios}">
-                    <td th:text="${funcionario.id}"></td>
-                    <td th:text="${funcionario.nome}"></td>
-                    <td th:text="${funcionario.telefone}"></td>
-                    <td th:text="${funcionario.email}"></td>
-                    <td th:text="${funcionario.salario}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Relatório de Clientes -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title">Clientes</h5>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Telefone</th>
-                    <th>Email</th>
-                    <th>Endereço</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="cliente : ${clientes}">
-                    <td th:text="${cliente.id}"></td>
-                    <td th:text="${cliente.nome}"></td>
-                    <td th:text="${cliente.telefone}"></td>
-                    <td th:text="${cliente.email}"></td>
-                    <td th:text="${cliente.endereco}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Botão para Voltar -->
-    <a href="/static" class="btn btn-secondary">
-        <i class="fas fa-arrow-left"></i> Voltar para o Início
-    </a>
-
+<div class="tabs">
+    <div class="tab">Agenda</div>
+    <div class="tab">Serviços</div>
+    <div class="tab">Funcionários</div>
+    <div class="tab">Clientes</div>
 </div>
 
-<!-- Bootstrap JS (optional) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<div class="report" id="agenda-report">
+    <h2>Relatório de Agendas</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            <th>Cliente</th>
+            <th>Funcionário</th>
+            <th>Serviço</th>
+            <th>Data</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="agenda : ${agendas}">
+            <td th:text="${agenda.id}"></td>
+            <td th:text="${agenda.descricao}"></td>
+            <td th:text="${agenda.cliente.nome}"></td>
+            <td th:text="${agenda.funcionario.nome}"></td>
+            <td th:text="${agenda.servico.nome}"></td>
+            <td th:text="${agenda.data.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm'))}"></td>
+            <td th:text="${agenda.status ? 'Realizado' : 'Pendente'}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
+<div class="report" id="servico-report">
+    <h2>Relatório de Serviços</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="servico : ${servicos}">
+            <td th:text="${servico.id}"></td>
+            <td th:text="${servico.nome}"></td>
+            <td th:number="${servico.valor}"></td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="report" id="funcionario-report">
+    <h2>Relatório de Funcionários</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="funcionario : ${funcionarios}">
+            <td th:text="${funcionario.id}"></td>
+            <td th:text="${funcionario.nome}"></td>
+            <td th:text="${funcionario.email}"></td>
+            <td th:text="${funcionario.telefone}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="report" id="cliente-report">
+    <h2>Relatório de Clientes</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cliente : ${clientes}">
+            <td th:text="${cliente.id}"></td>
+            <td th:text="${cliente.nome}"></td>
+            <td th:text="${cliente.email}"></td>
+            <td th:text="${cliente.telefone}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

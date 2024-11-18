@@ -1,99 +1,162 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${agenda.id != null ? 'Editar Agenda' : 'Criar Nova Agenda'}"></title>
-
-    <!-- Bootstrap 4 CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome para ícones -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-
+    <title>Criar Agenda</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        /* Geral */
         body {
-            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9; /* Cor de fundo mais suave */
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
-        .container {
-            max-width: 800px;
-            margin-top: 30px;
-        }
+
         h1 {
-            margin-bottom: 20px;
+            color: #2c3e50; /* Cor escura para o título */
             text-align: center;
-            font-size: 2rem;
-            color: #343a40;
+            margin-top: 50px;
+            font-size: 2.5em;
         }
-        .form-group {
-            margin-bottom: 15px;
+
+        /* Estilo do formulário */
+        form {
+            width: 60%;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
-        .btn-submit {
-            width: 100%;
-        }
-        .btn-back {
-            margin-top: 20px;
+
+        label {
+            font-size: 1.1em;
+            color: #34495e;
             display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"], input[type="password"], select {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        button {
+            background-color: #2ecc71; /* Verde suave */
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #27ae60; /* Verde escuro no hover */
+        }
+
+        /* Ações: botão de cancelamento */
+        .actions {
             text-align: center;
+            margin-top: 20px;
         }
-        .form-label {
-            font-weight: bold;
+
+        .actions a {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 1em;
+            margin-right: 15px;
         }
+
+        .actions a:hover {
+            background-color: #2980b9;
+        }
+
     </style>
 </head>
 <body>
-
 <div class="container">
-    <h1 th:text="${agenda.id != null ? 'Editar Agenda' : 'Criar Nova Agenda'}"></h1>
+    <h1>Criar Agenda</h1>
+    <!-- Formulário para criar agenda -->
+    <form th:action="@{/agenda/salvar}" method="post" th:object="${agenda}">
 
-    <!-- Formulário de Agendas -->
-    <form th:action="@{/agenda/save}" th:object="${agenda}" method="post">
-
-        <!-- Campo de Descrição -->
+        <!-- Descrição da Agenda -->
         <div class="form-group">
-            <label class="form-label" for="descricao">Descrição</label>
-            <input type="text" th:field="*{descricao}" class="form-control" placeholder="Descrição" required />
+            <label for="descricao">Descrição</label>
+            <input type="text" class="form-control" id="descricao" name="descricao" th:value="*{descricao}" required>
         </div>
 
-        <!-- Campo de Data -->
+        <!-- Cliente -->
         <div class="form-group">
-            <label class="form-label" for="data">Data</label>
-            <input type="datetime-local" th:field="*{data}" class="form-control" required />
-        </div>
-
-        <!-- Campo de Cliente -->
-        <div class="form-group">
-            <label class="form-label" for="cliente">Cliente</label>
-            <select th:field="*{cliente.id}" class="form-control" required>
+            <label for="cliente">Cliente</label>
+            <select class="form-control" id="cliente" name="cliente.id" required>
+                <option value="" disabled selected>Selecione um cliente</option>
                 <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nome}"></option>
             </select>
         </div>
 
-        <!-- Campo de Funcionário -->
+        <!-- Funcionário -->
         <div class="form-group">
-            <label class="form-label" for="funcionario">Funcionário</label>
-            <select th:field="*{funcionario.id}" class="form-control" required>
+            <label for="funcionario">Funcionário</label>
+            <select class="form-control" id="funcionario" name="funcionario.id" required>
+                <option value="" disabled selected>Selecione um funcionário</option>
                 <option th:each="funcionario : ${funcionarios}" th:value="${funcionario.id}" th:text="${funcionario.nome}"></option>
             </select>
         </div>
 
-        <!-- Botão de Submit -->
-        <button type="submit" class="btn btn-primary btn-submit">
-            <i class="fas fa-save"></i> Salvar
-        </button>
+        <!-- Serviço -->
+        <div class="form-group">
+            <label for="servico">Serviço</label>
+            <select class="form-control" id="servico" name="servico.id" required>
+                <option value="" disabled selected>Selecione um serviço</option>
+                <option th:each="servico : ${servicos}" th:value="${servico.id}" th:text="${servico.nome}"></option>
+            </select>
+        </div>
 
+        <!-- Usuário -->
+        <div class="form-group">
+            <label for="usuario">Usuário</label>
+            <select class="form-control" id="usuario" name="usuario.id" required>
+                <option value="" disabled selected>Selecione um usuário</option>
+                <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nomeUsuario}"></option>
+            </select>
+        </div>
+
+        <!-- Data do Agendamento -->
+        <div class="form-group">
+            <label for="data">Data do Agendamento</label>
+            <input type="datetime-local" class="form-control" id="data" name="data" th:value="*{data}" required>
+        </div>
+
+        <!-- Botão para submeter o formulário -->
+        <button type="submit">Salvar</button>
     </form>
 
-    <!-- Link de Voltar para a Lista de Agendas -->
-    <a href="/agenda/listar" class="btn btn-secondary btn-back">
-        <i class="fas fa-arrow-left"></i> Voltar para a Lista de Agendas
-    </a>
+    <!-- Botão de Cancelar (opcional) -->
+    <div class="actions">
+        <a href="/agenda" class="button">Cancelar</a>
+    </div>
 </div>
 
-<!-- Bootstrap JS (optional) -->
+<!-- Scripts do Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 </html>

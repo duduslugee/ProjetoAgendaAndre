@@ -1,6 +1,8 @@
 package br.duduslugee.Agenda.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +18,7 @@ public class Agenda {
     @JoinColumn(name = "servico_id")
     private Servico servico;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime data;
 
     @ManyToOne
