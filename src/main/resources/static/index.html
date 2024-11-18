@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Listar Endereços</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
     <style>
         /* Geral */
         body {
@@ -59,44 +60,30 @@
         h1 {
             color: #2c3e50;
             text-align: center;
-            font-size: 2.5em;
+            font-size: 3em;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        h2 {
+            color: #34495e;
+            text-align: center;
+            font-size: 1.5em;
+            margin-top: 20px;
         }
 
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
+        .intro-text {
+            text-align: center;
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
             font-size: 1em;
+            color: #7f8c8d;
         }
 
-        th {
-            background-color: #34495e;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #ecf0f1;
-        }
-
-        tr:hover {
-            background-color: #bdc3c7;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            table {
-                font-size: 0.9em;
-            }
-        }
     </style>
 </head>
 <body>
@@ -114,31 +101,16 @@
 
 <!-- Conteúdo Principal -->
 <div class="main-content">
-    <h1>Lista de Endereços</h1>
+    <h1>Bem-vindo ao Sistema</h1>
+    <h2>Seu sistema de agendamento integrado</h2>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Logradouro</th>
-            <th>Cidade</th>
-            <th>Estado</th>
-            <th>Ações</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="endereco : ${enderecos}">
-            <td th:text="${endereco.logradouro}"></td>
-            <td th:text="${endereco.cidade}"></td>
-            <td th:text="${endereco.estado}"></td>
-            <td>
-                <a th:href="@{/endereco/editar/{id}(id=${endereco.id})}">Editar</a> |
-                <a th:href="@{/endereco/excluir/{id}(id=${endereco.id})}" onclick="return confirm('Tem certeza que deseja excluir este endereço?')">Excluir</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="intro-text">
+        <p>Gerencie seus usuários, clientes e agendas de forma simples e eficiente.</p>
+    </div>
 
-    <a href="#" th:href="@{/endereco/adicionar}">Adicionar Endereço</a>
+    <div class="footer">
+        <p>&copy; 2024 Eduardo Ramos e Leonardo Caseri - Todos os direitos reservados.</p>
+    </div>
 </div>
 
 </body>

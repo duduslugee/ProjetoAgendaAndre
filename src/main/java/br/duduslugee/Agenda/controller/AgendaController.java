@@ -1,6 +1,7 @@
 package br.duduslugee.Agenda.controller;
 
 import br.duduslugee.Agenda.model.Agenda;
+import br.duduslugee.Agenda.repository.AgendaRepository;
 import br.duduslugee.Agenda.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -31,6 +33,8 @@ public class AgendaController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private AgendaRepository agendaRepository;
 
     @GetMapping("/criar")
     public String criarAgenda(Model model) {
@@ -94,5 +98,20 @@ public class AgendaController {
         } catch (RuntimeException e) {
             return "error";
         }
+    }
+
+    @GetMapping("/realizado/{id}")
+    public String marcarComoRealizado(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        Agenda agenda = agendaRepository.findById(id).orElse(null);
+        if (agenda != null) {
+            // Alterar o status da agenda para "Realizado"
+            agenda.setStatus(true);
+            agendaRepository.save(agenda);
+
+            redirectAttributes.addFlashAttribute("message", "Agenda marcada como Realizada com sucesso!");
+        }
+
+        // Redirecionar de volta para a lista de agendas
+        return "redirect:/agenda";
     }
 }

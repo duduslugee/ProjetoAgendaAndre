@@ -11,6 +11,50 @@
             color: white;
             margin: 0;
             padding: 0;
+            display: flex;
+        }
+
+        /* Barra Lateral */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding-top: 50px;
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: #ecf0f1;
+            font-size: 1.5em;
+            margin-bottom: 40px;
+        }
+
+        .sidebar a {
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #ecf0f1;
+            font-size: 1.1em;
+            text-align: left;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .sidebar a:hover {
+            background-color: #2980b9;
+        }
+
+        /* Estilização do conteúdo principal */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            flex-grow: 1;
+            width: 100%;
         }
 
         h1 {
@@ -80,37 +124,54 @@
             background-color: #FF6F61;
             color: white;
         }
+
     </style>
 </head>
 <body>
-<h1>Cadastro de Endereço</h1>
-<form action="/endereco/salvar" method="post">
-    <label for="cep">CEP:</label>
-    <input type="text" id="cep" name="cep" th:field="*{endereco.cep}" required><br>
 
-    <label for="logradouro">Logradouro:</label>
-    <input type="text" id="logradouro" name="logradouro" th:field="*{endereco.logradouro}" required><br>
-
-    <label for="uf">UF:</label>
-    <input type="text" id="uf" name="uf" th:field="*{endereco.uf}" required><br>
-
-    <label for="estado">Estado:</label>
-    <input type="text" id="estado" name="estado" th:field="*{endereco.estado}" required><br>
-
-    <label for="cidade">Cidade:</label>
-    <input type="text" id="cidade" name="cidade" th:field="*{endereco.cidade}" required><br>
-
-    <label for="numero">Número:</label>
-    <input type="number" id="numero" name="numero" th:field="*{endereco.numero}" required><br>
-
-    <label for="complemento">Complemento:</label>
-    <input type="text" id="complemento" name="complemento" th:field="*{endereco.complemento}"><br>
-
-    <button type="submit">Salvar</button>
-</form>
-
-<div class="btn-voltar">
-    <a href="/endereco">Voltar</a>
+<!-- Barra Lateral -->
+<div class="sidebar">
+    <h2>Menu</h2>
+    <a href="/agenda">Agendas</a>
+    <a href="/clientes">Clientes</a>
+    <a href="/funcionarios">Funcionários</a>
+    <a href="/usuarios">Usuários</a>
+    <a href="/servicos">Serviços</a>
+    <a href="/relatorios">Relatórios</a> <!-- Nova opção Relatórios -->
 </div>
+
+<!-- Conteúdo Principal -->
+<div class="main-content">
+    <h1>Cadastro de Endereço</h1>
+    <form action="/endereco/salvar" method="post">
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" name="cep" th:field="*{endereco.cep}" required><br>
+
+        <label for="logradouro">Logradouro:</label>
+        <input type="text" id="logradouro" name="logradouro" th:field="*{endereco.logradouro}" required><br>
+
+        <label for="uf">UF:</label>
+        <input type="text" id="uf" name="uf" th:field="*{endereco.uf}" required><br>
+
+        <label for="estado">Estado:</label>
+        <input type="text" id="estado" name="estado" th:field="*{endereco.estado}" required><br>
+
+        <label for="cidade">Cidade:</label>
+        <input type="text" id="cidade" name="cidade" th:field="*{endereco.cidade}" required><br>
+
+        <label for="numero">Número:</label>
+        <input type="number" id="numero" name="numero" th:field="*{endereco.numero}" required><br>
+
+        <label for="complemento">Complemento:</label>
+        <input type="text" id="complemento" name="complemento" th:field="*{endereco.complemento}"><br>
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <div class="btn-voltar">
+        <a href="/endereco">Voltar</a>
+    </div>
+</div>
+
 </body>
 </html>

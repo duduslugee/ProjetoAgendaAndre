@@ -11,10 +11,53 @@
             color: #333;
             margin: 0;
             padding: 0;
+            display: flex;
+        }
+
+        /* Estilo da barra lateral */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding-top: 50px;
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: #ecf0f1;
+            font-size: 1.5em;
+            margin-bottom: 40px;
+        }
+
+        .sidebar a {
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #ecf0f1;
+            font-size: 1.1em;
+            text-align: left;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .sidebar a:hover {
+            background-color: #2980b9;
+        }
+
+        /* Estilo do conteúdo principal */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            flex-grow: 1;
         }
 
         h1 {
-            color: #2c3e50; /* Cor escura para o título */
+            color: #2c3e50;
             text-align: center;
             margin-top: 50px;
             font-size: 2.5em;
@@ -78,22 +121,36 @@
 </head>
 <body>
 
-<h1 th:text="${servico.id} != null ? 'Editar Serviço' : 'Criar Novo Serviço'"></h1>
+<!-- Barra Lateral -->
+<div class="sidebar">
+    <h2>Menu</h2>
+    <a href="/agenda">Agendas</a>
+    <a href="/clientes">Clientes</a>
+    <a href="/funcionarios">Funcionários</a>
+    <a href="/usuarios">Usuários</a>
+    <a href="/servicos">Serviços</a>
+    <a href="/relatorios">Relatórios</a> <!-- Nova opção Relatórios -->
+</div>
 
-<form th:action="@{/servicos/salvar}" th:object="${servico}" method="post">
-    <!-- Campo oculto para o ID -->
-    <input type="hidden" th:field="*{id}" />
+<!-- Conteúdo Principal -->
+<div class="main-content">
+    <h1 th:text="${servico.id} != null ? 'Editar Serviço' : 'Criar Novo Serviço'"></h1>
 
-    <label for="nome">Nome do Serviço:</label>
-    <input type="text" id="nome" th:field="*{nome}" placeholder="Digite o nome do serviço" required/>
+    <form th:action="@{/servicos/salvar}" th:object="${servico}" method="post">
+        <!-- Campo oculto para o ID -->
+        <input type="hidden" th:field="*{id}" />
 
-    <label for="valor">Valor do Serviço:</label>
-    <input type="number" id="valor" th:field="*{valor}" placeholder="Digite o valor do serviço" step="0.01" required/>
+        <label for="nome">Nome do Serviço:</label>
+        <input type="text" id="nome" th:field="*{nome}" placeholder="Digite o nome do serviço" required/>
 
-    <button type="submit" th:text="${servico.id} != null ? 'Atualizar Serviço' : 'Salvar Serviço'"></button>
-</form>
+        <label for="valor">Valor do Serviço:</label>
+        <input type="number" id="valor" th:field="*{valor}" placeholder="Digite o valor do serviço" step="0.01" required/>
 
-<a href="/servicos" class="back-link">Voltar para a lista</a>
+        <button type="submit" th:text="${servico.id} != null ? 'Atualizar Serviço' : 'Salvar Serviço'"></button>
+    </form>
+
+    <a href="/servicos" class="back-link">Voltar para a lista</a>
+</div>
 
 </body>
 </html>

@@ -16,6 +16,48 @@
             margin: 0;
         }
 
+        /* Barra Lateral */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding-top: 50px;
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: #ecf0f1;
+            font-size: 1.5em;
+            margin-bottom: 40px;
+        }
+
+        .sidebar a {
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #ecf0f1;
+            font-size: 1.1em;
+            text-align: left;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .sidebar a:hover {
+            background-color: #2980b9;
+        }
+
+        /* Estilo do conteúdo principal */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            flex-grow: 1;
+        }
+
         h1 {
             color: #2c3e50; /* Cor do título mais sóbria */
             margin-bottom: 30px;
@@ -95,50 +137,64 @@
 </head>
 <body>
 
-<h1>Cadastro de Cliente</h1>
+<!-- Barra Lateral -->
+<div class="sidebar">
+    <h2>Menu</h2>
+    <a href="/agenda">Agendas</a>
+    <a href="/clientes">Clientes</a>
+    <a href="/funcionarios">Funcionários</a>
+    <a href="/usuarios">Usuários</a>
+    <a href="/servicos">Serviços</a>
+    <a href="/relatorios">Relatórios</a> <!-- Nova opção Relatórios -->
+</div>
 
-<!-- Formulário de edição/novo cliente -->
-<form th:action="@{'/clientes/salvar'}" th:object="${cliente}" method="post">
-    <input type="hidden" th:field="*{id}" />
+<!-- Conteúdo Principal -->
+<div class="main-content">
+    <h1>Cadastro de Cliente</h1>
 
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" th:field="*{nome}" placeholder="Digite o nome completo" />
+    <!-- Formulário de edição/novo cliente -->
+    <form th:action="@{'/clientes/salvar'}" th:object="${cliente}" method="post">
+        <input type="hidden" th:field="*{id}" />
 
-    <label for="telefone">Telefone:</label>
-    <input type="text" id="telefone" th:field="*{telefone}" placeholder="Digite o telefone com DDD" />
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" th:field="*{nome}" placeholder="Digite o nome completo" />
 
-    <label for="email">Email:</label>
-    <input type="text" id="email" th:field="*{email}" placeholder="Digite o email" />
+        <label for="telefone">Telefone:</label>
+        <input type="text" id="telefone" th:field="*{telefone}" placeholder="Digite o telefone com DDD" />
 
-    <label for="cep">CEP:</label>
-    <input type="text" id="cep" th:field="*{endereco.cep}" placeholder="Digite o CEP" />
+        <label for="email">Email:</label>
+        <input type="text" id="email" th:field="*{email}" placeholder="Digite o email" />
 
-    <label for="logradouro">Logradouro:</label>
-    <input type="text" id="logradouro" th:field="*{endereco.logradouro}" placeholder="Digite o logradouro" />
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" th:field="*{endereco.cep}" placeholder="Digite o CEP" />
 
-    <label for="uf">UF:</label>
-    <input type="text" id="uf" th:field="*{endereco.uf}" placeholder="Digite o estado" />
+        <label for="logradouro">Logradouro:</label>
+        <input type="text" id="logradouro" th:field="*{endereco.logradouro}" placeholder="Digite o logradouro" />
 
-    <label for="estado">Estado:</label>
-    <input type="text" id="estado" th:field="*{endereco.estado}" placeholder="Digite o estado" />
+        <label for="uf">UF:</label>
+        <input type="text" id="uf" th:field="*{endereco.uf}" placeholder="Digite o estado" />
 
-    <label for="cidade">Cidade:</label>
-    <input type="text" id="cidade" th:field="*{endereco.cidade}" placeholder="Digite a cidade" />
+        <label for="estado">Estado:</label>
+        <input type="text" id="estado" th:field="*{endereco.estado}" placeholder="Digite o estado" />
 
-    <label for="numero">Número:</label>
-    <input type="text" id="numero" th:field="*{endereco.numero}" placeholder="Número da casa" />
+        <label for="cidade">Cidade:</label>
+        <input type="text" id="cidade" th:field="*{endereco.cidade}" placeholder="Digite a cidade" />
 
-    <label for="complemento">Complemento:</label>
-    <input type="text" id="complemento" th:field="*{endereco.complemento}" placeholder="Complemento" />
+        <label for="numero">Número:</label>
+        <input type="text" id="numero" th:field="*{endereco.numero}" placeholder="Número da casa" />
 
-    <div th:if="${#fields.hasErrors('nome')}" class="error">
-        <p th:errors="*{nome}"></p>
-    </div>
+        <label for="complemento">Complemento:</label>
+        <input type="text" id="complemento" th:field="*{endereco.complemento}" placeholder="Complemento" />
 
-    <button type="submit">Salvar</button>
-</form>
+        <div th:if="${#fields.hasErrors('nome')}" class="error">
+            <p th:errors="*{nome}"></p>
+        </div>
 
-<a th:href="@{'/clientes'}">Voltar</a>
+        <button type="submit">Salvar</button>
+    </form>
+
+    <a th:href="@{'/clientes'}">Voltar</a>
+</div>
 
 <script>
     // Função para chamar o backend via AJAX

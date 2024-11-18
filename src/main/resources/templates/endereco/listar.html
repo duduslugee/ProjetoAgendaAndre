@@ -11,6 +11,50 @@
             color: white;
             margin: 0;
             padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Barra Lateral */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding-top: 50px;
+            position: fixed;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            color: #ecf0f1;
+            font-size: 1.5em;
+            margin-bottom: 40px;
+        }
+
+        .sidebar a {
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #ecf0f1;
+            font-size: 1.1em;
+            text-align: left;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .sidebar a:hover {
+            background-color: #2980b9;
+        }
+
+        /* Conteúdo Principal */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            flex-grow: 1;
         }
 
         h1 {
@@ -80,52 +124,68 @@
         .add-button:hover {
             background-color: #45a049;
         }
+
     </style>
 </head>
 <body>
-<h1>Lista de Endereços</h1>
 
-<!-- Botão para adicionar novo endereço -->
-<a href="/endereco/adicionar">
-    <button class="add-button">Adicionar Novo Endereço</button>
-</a>
+<!-- Barra Lateral -->
+<div class="sidebar">
+    <h2>Menu</h2>
+    <a href="/agenda">Agendas</a>
+    <a href="/clientes">Clientes</a>
+    <a href="/funcionarios">Funcionários</a>
+    <a href="/usuarios">Usuários</a>
+    <a href="/servicos">Serviços</a>
+    <a href="/relatorios">Relatórios</a> <!-- Nova opção Relatórios -->
+</div>
 
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Rua (Logradouro)</th>
-        <th>Cidade</th>
-        <th>Estado</th>
-        <th>CEP</th>
-        <th>UF</th>
-        <th>Número</th>
-        <th>Complemento</th>
-        <th>Ações</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="endereco : ${enderecos}">
-        <td th:text="${endereco.id}"></td>
-        <td th:text="${endereco.logradouro}"></td>
-        <td th:text="${endereco.cidade}"></td>
-        <td th:text="${endereco.estado}"></td>
-        <td th:text="${endereco.cep}"></td>
-        <td th:text="${endereco.uf}"></td>
-        <td th:text="${endereco.numero}"></td>
-        <td th:text="${endereco.complemento}"></td>
-        <td class="btn-container">
-            <a th:href="@{/endereco/editar/{id}(id=${endereco.id})}">
-                <button>Editar</button>
-            </a>
-            <form th:action="@{/endereco/excluir/{id}(id=${endereco.id})}" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este endereço?')">
-                <input type="hidden" name="_method" value="DELETE"/>
-                <button type="submit">Excluir</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<!-- Conteúdo Principal -->
+<div class="main-content">
+    <h1>Lista de Endereços</h1>
+
+    <!-- Botão para adicionar novo endereço -->
+    <a href="/endereco/adicionar">
+        <button class="add-button">Adicionar Novo Endereço</button>
+    </a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Rua (Logradouro)</th>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>CEP</th>
+            <th>UF</th>
+            <th>Número</th>
+            <th>Complemento</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="endereco : ${enderecos}">
+            <td th:text="${endereco.id}"></td>
+            <td th:text="${endereco.logradouro}"></td>
+            <td th:text="${endereco.cidade}"></td>
+            <td th:text="${endereco.estado}"></td>
+            <td th:text="${endereco.cep}"></td>
+            <td th:text="${endereco.uf}"></td>
+            <td th:text="${endereco.numero}"></td>
+            <td th:text="${endereco.complemento}"></td>
+            <td class="btn-container">
+                <a th:href="@{/endereco/editar/{id}(id=${endereco.id})}">
+                    <button>Editar</button>
+                </a>
+                <form th:action="@{/endereco/excluir/{id}(id=${endereco.id})}" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este endereço?')">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <button type="submit">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>
